@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/yungkc/git/basicMathParser/math_parser.c
+math_parser.h
+/home/yungkc/git/basicMathParser/math_parser.h
+
+/home/yungkc/git/basicMathParser/math_parser.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+errno.h
+-
+math.h
+-
+assert.h
+-
+
+/home/yungkc/git/basicMathParser/test.c
+math_parser.h
+/home/yungkc/git/basicMathParser/math_parser.h
+
