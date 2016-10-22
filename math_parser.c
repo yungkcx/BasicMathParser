@@ -15,16 +15,27 @@ void math_init(math_value *v)
     v->math_n = 0.0;
 }
 
-void math_free(math_value *v)
+static void math_free_leaves(math_value *v)
 {
-    if (v->type == MATH_NUMBER) {
-    } else if (v->type == MATH_OPERATOR) {
+    assert(v != NULL);
+    if (v->type == MATH_OPERATOR) {
         if (v->math_l)
-            math_free(v->math_l);
+            math_free_leaves(v->math_l);
         if (v->math_r)
-            math_free(v->math_r);
+            math_free_leaves(v->math_r);
     }
     free(v);
+}
+
+void math_free(math_value *v)
+{
+    assert(v != NULL);
+    if (v->type == MATH_OPERATOR) {
+        if (v->math_l)
+            math_free_leaves(v->math_l);
+        if (v->math_r)
+            math_free_leaves(v->math_r);
+    }
 }
 
 static const char *math_parse_whitespace(const char *math)
@@ -141,6 +152,8 @@ int math_parse(const char *math, math_value *v)
     int ret;
     math_context c;
 
+    if (v == NULL)
+        return MATH_INVALID_NUMBER;
     math_init(v);
     c.end = math + strlen(math) - 1;
     c.start = math_parse_whitespace(math);

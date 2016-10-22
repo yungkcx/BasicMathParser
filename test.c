@@ -23,6 +23,7 @@ static int test_pass = 0;
         math_value v;\
         math_init(&v);\
         TEST_EQ_INT(error, math_parse(math, &v));\
+        math_free(&v);\
     } while (0)
 
 #define TEST_PARSE_NUMBER(expect, math)\
@@ -32,11 +33,15 @@ static int test_pass = 0;
         TEST_EQ_INT(MATH_PARSE_OK, math_parse(math, &v));\
         TEST_EQ_INT(MATH_CALCULATE_OK, math_calculate(&v));\
         TEST_EQ_DOUBLE(expect, math_get_number(&v));\
+        math_free(&v);\
     } while (0)
         
 
 static void test_number()
 {
+    TEST_PARSE_NUMBER(-1.0*43, "-1.0*43");
+    TEST_PARSE_NUMBER(-1.0, "-1.0");
+    TEST_PARSE_NUMBER(1.0, "+1.0");
     TEST_PARSE_NUMBER(123.45, "123.45");
     TEST_PARSE_NUMBER(123.45 + 12.34, "123.45+12.34");
     TEST_PARSE_NUMBER(123.45 - 12.34 * 1234, "123.45-12.34*1234");
@@ -54,31 +59,41 @@ static void test_number()
         math_init(&v);\
         TEST_EQ_INT(MATH_PARSE_OK, math_parse(math, &v));\
         TEST_EQ_INT(error, math_calculate(&v));\
+        math_free(&v);\
     } while (0)
 
-static void math_test()
+void test_calculate_error()
 {
     TEST_CALCULAT_ERROR(MATH_DIVISION_BY_ZERO, "11.0/0.0");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "10.0/");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "10.0-");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "0.0+");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "0.0-");
-    TEST_ERROR(MATH_INVALID_NUMBER, "10.0.0.0");
-    TEST_ERROR(MATH_INVALID_NUMBER, "0.0.0");
-    TEST_ERROR(MATH_INVALID_NUMBER, "1%2");
-    TEST_ERROR(MATH_INVALID_NUMBER, "1 2");
-    TEST_ERROR(MATH_INVALID_NUMBER, "1+ 2");
-    test_number();
-    TEST_PARSE_NUMBER(-1.0, "-1.0");
-    TEST_PARSE_NUMBER(1.0, "+1.0");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "*1.0");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "123/1.0-");
-    TEST_PARSE_NUMBER(-1.0*43, "-1.0*43");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "1++3");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "1+3*/+-*4");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "-1++3");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "*1+3");
     TEST_CALCULAT_ERROR(MATH_TOO_LESS_OPERAND, "/23.43290+3");
+}
+
+void test_error()
+{
+    TEST_ERROR(MATH_INVALID_NUMBER, "10.0.0.0");
+    TEST_ERROR(MATH_INVALID_NUMBER, "0.0.0");
+    TEST_ERROR(MATH_INVALID_NUMBER, "1%2");
+    TEST_ERROR(MATH_INVALID_NUMBER, "1 2");
+    TEST_ERROR(MATH_INVALID_NUMBER, "1+ 2");
+    TEST_ERROR(MATH_NUMBER_TOO_LARGE, "1e309");
+    TEST_ERROR(MATH_NUMBER_TOO_LARGE, "-1e309");
+}
+
+static void math_test()
+{
+    test_number();
+    test_calculate_error();
+    test_error();
 }
 
 int main()
