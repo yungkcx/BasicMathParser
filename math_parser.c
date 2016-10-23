@@ -1,6 +1,8 @@
 #include "math_parser.h"
 
-#define ISDIGIT(ch)    (ch <= '9' && ch >= '0')
+#define ISOPERATOR1(ch)    (ch == '+' || ch == '-')
+#define ISOPERATOR2(ch)    (ch == '*' || ch == '/')
+#define ISDIGIT(ch)        (ch <= '9' && ch >= '0')
 #define ISDIGIT1TO9(ch)    (ch <= '9' && ch >= '1')
 
 typedef struct {
@@ -47,28 +49,30 @@ static const char *math_parse_whitespace(const char *math)
     return p;
 }
 
-static const char *math_parse_priority(math_context *c, math_context *sub, int priority)
+static const char *math_parse_find_operator(math_context *c, math_context *sub)
 {
-    const char *p;
-    char op[2];
-    assert(priority == 1 || priority == 2);
-    if (priority == 1){
-        op[0] = '+';
-        op[1] = '-';
-    } else if (priority == 2) {
-        op[0] = '*';
-        op[1] = '/';
-    }
+    const char *p, *op;
+    op = NULL;
     sub->start = sub->end = c->end;
     for (p = c->end; p != c->start - 1; --p) {
-        if (*p == op[0] || *p == op[1]) {
+        if (ISOPERATOR1(*p)) {
             sub->start = p;
             sub->end = c->end;
             c->end = p - 1;
             return p;
+        } else if (ISOPERATOR2(*p)) {
+            if (!op)
+                op = p;
         }
     }
-    return NULL;
+    if (!op) {
+        return NULL;
+    } else {
+        sub->start = op;
+        sub->end = c->end;
+        c->end = op - 1;
+        return op;
+    }
 }
 
 static int math_parse_number(math_context *c, math_value *v)
@@ -90,18 +94,6 @@ static int math_parse_number(math_context *c, math_value *v)
         for (++p; ISDIGIT(*p); ++p)
             ;
     }
-
-#if 0
-    if (*p == 'e' || *p == 'E') {
-        ++p;
-        if (*p == '-' || *p == '+')
-            ++p;
-        if (!ISDIGIT(*p))
-            return MATH_INVALID_NUMBER;
-        for (++p; ISDIGIT(*p); ++p)
-            ;
-    }
-#endif
     errno = 0;
     v->math_n = strtod(c->start, &end);
     if (end == c->start)
@@ -126,9 +118,8 @@ static int math_parse_expression(math_context *c, math_value *v)
 {
     int ret;
     math_context sub;
-    if (math_parse_priority(c, &sub, 1) == NULL)
-        if (math_parse_priority(c, &sub, 2) == NULL)
-            return math_parse_number(c, v);
+    if (math_parse_find_operator(c, &sub) == NULL)
+        return math_parse_number(c, v);
     math_parse_operator(&sub, v);
     if (sub.start != sub.end + 1) {
         v->math_r = (math_value *) malloc(sizeof(math_value));
