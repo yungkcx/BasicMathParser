@@ -49,36 +49,66 @@ static const char *math_parse_whitespace(const char *math)
     return p;
 }
 
+static const char *math_parse_brackets(const char *p, math_context *c)
+{
+    int count = 0;
+    for (; p != c->start - 1; --p) {
+        if (*p == ')')
+            count++;
+        else if (*p == '(')
+            count--;
+        if (count == 0)
+            break;
+    }
+    if (count)
+        return NULL;
+    return p;
+}
+
 static const char *math_parse_find_operator(math_context *c, math_context *sub)
 {
     const char *p, *op;
     op = NULL;
     sub->start = sub->end = c->end;
     for (p = c->end; p != c->start - 1; --p) {
+        if (*p == ')') {
+            if ((p = math_parse_brackets(p, c)) == NULL)
+                return NULL;
+            continue;
+        }
         if (ISOPERATOR1(*p)) {
-            sub->start = p;
-            sub->end = c->end;
-            c->end = p - 1;
-            return p;
+            op = p;
+            goto found;
         } else if (ISOPERATOR2(*p)) {
             if (!op)
                 op = p;
         }
     }
-    if (!op) {
+    if (!op)
         return NULL;
-    } else {
-        sub->start = op;
-        sub->end = c->end;
-        c->end = op - 1;
-        return op;
-    }
+found:
+    sub->start = op;
+    sub->end = c->end;
+    c->end = op - 1;
+    return op;
 }
 
+static int math_parse_expression(math_context *c, math_value *v);
 static int math_parse_number(math_context *c, math_value *v)
 {
     char *end;
     const char *p = c->start;
+    /* deal with '()' */
+    if (*c->start == '(') {
+        if (*c->end == ')') {
+            c->start++;
+            c->end--;
+            return math_parse_expression(c, v);
+        } else {
+            return MATH_UNEXPECTED_BRACKET;
+        }
+    }
+    /* deal with regular double number */
     if (*p == '0') {
         ++p;
     } else {
