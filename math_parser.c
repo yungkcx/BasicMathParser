@@ -31,7 +31,6 @@ static void math_free_leaves(math_value *v)
 
 void math_free(math_value *v)
 {
-    assert(v != NULL);
     if (v->type == MATH_OPERATOR) {
         if (v->math_l)
             math_free_leaves(v->math_l);
@@ -77,6 +76,8 @@ static const char *math_parse_find_operator(math_context *c, math_context *sub)
             continue;
         }
         if (ISOPERATOR1(*p)) {
+            if (*(p - 1) == 'e' || *(p - 1) == 'E')
+                continue;
             op = p;
             goto found;
         } else if (ISOPERATOR2(*p)) {
@@ -119,6 +120,15 @@ static int math_parse_number(math_context *c, math_value *v)
     }
     if (*p == '.') {
         ++p;
+        if (!ISDIGIT(*p))
+            return MATH_INVALID_NUMBER;
+        for (++p; ISDIGIT(*p); ++p)
+            ;
+    }
+    if (*p == 'e' || *p == 'E') {
+        ++p;
+        if (*p == '+' || *p == '-')
+            ++p;
         if (!ISDIGIT(*p))
             return MATH_INVALID_NUMBER;
         for (++p; ISDIGIT(*p); ++p)
@@ -198,7 +208,6 @@ void math_display(const math_value *v)
 
 double math_get_number(const math_value *v)
 {
-    assert(v->type == MATH_NUMBER || v->type == MATH_OPERATOR);
     if (v->type == MATH_NUMBER)
         return v->math_n;
     else
@@ -210,7 +219,6 @@ int math_calculate(math_value *v)
     int l, r;
     if (!v)
         return MATH_CALCULATE_OK;
-    assert(v->type == MATH_OPERATOR || v->type == MATH_NUMBER);
     if (v->type == MATH_NUMBER) {
         return MATH_CALCULATE_OK;
     } else if (v->type == MATH_OPERATOR) {
