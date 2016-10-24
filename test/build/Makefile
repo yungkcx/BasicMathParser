@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/yungkc/git/basicMathParser
+CMAKE_SOURCE_DIR = /home/yungkc/git/basicMathParser/test
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/yungkc/git/basicMathParser/build
+CMAKE_BINARY_DIR = /home/yungkc/git/basicMathParser/test/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yungkc/git/basicMathParser/build/CMakeFiles /home/yungkc/git/basicMathParser/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yungkc/git/basicMathParser/test/build/CMakeFiles /home/yungkc/git/basicMathParser/test/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yungkc/git/basicMathParser/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yungkc/git/basicMathParser/test/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named bmath
+# Target rules for targets named parserTest
 
 # Build rule for target.
-bmath: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bmath
-.PHONY : bmath
+parserTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 parserTest
+.PHONY : parserTest
 
 # fast build rule for target.
-bmath/fast:
-	$(MAKE) -f CMakeFiles/bmath.dir/build.make CMakeFiles/bmath.dir/build
-.PHONY : bmath/fast
+parserTest/fast:
+	$(MAKE) -f CMakeFiles/parserTest.dir/build.make CMakeFiles/parserTest.dir/build
+.PHONY : parserTest/fast
 
-src/math_parser.o: src/math_parser.c.o
+test.o: test.c.o
 
-.PHONY : src/math_parser.o
+.PHONY : test.o
 
 # target to build an object file
-src/math_parser.c.o:
-	$(MAKE) -f CMakeFiles/bmath.dir/build.make CMakeFiles/bmath.dir/src/math_parser.c.o
-.PHONY : src/math_parser.c.o
+test.c.o:
+	$(MAKE) -f CMakeFiles/parserTest.dir/build.make CMakeFiles/parserTest.dir/test.c.o
+.PHONY : test.c.o
 
-src/math_parser.i: src/math_parser.c.i
+test.i: test.c.i
 
-.PHONY : src/math_parser.i
+.PHONY : test.i
 
 # target to preprocess a source file
-src/math_parser.c.i:
-	$(MAKE) -f CMakeFiles/bmath.dir/build.make CMakeFiles/bmath.dir/src/math_parser.c.i
-.PHONY : src/math_parser.c.i
+test.c.i:
+	$(MAKE) -f CMakeFiles/parserTest.dir/build.make CMakeFiles/parserTest.dir/test.c.i
+.PHONY : test.c.i
 
-src/math_parser.s: src/math_parser.c.s
+test.s: test.c.s
 
-.PHONY : src/math_parser.s
+.PHONY : test.s
 
 # target to generate assembly for a file
-src/math_parser.c.s:
-	$(MAKE) -f CMakeFiles/bmath.dir/build.make CMakeFiles/bmath.dir/src/math_parser.c.s
-.PHONY : src/math_parser.c.s
+test.c.s:
+	$(MAKE) -f CMakeFiles/parserTest.dir/build.make CMakeFiles/parserTest.dir/test.c.s
+.PHONY : test.c.s
 
 # Help Target
 help:
@@ -158,10 +158,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... bmath"
-	@echo "... src/math_parser.o"
-	@echo "... src/math_parser.i"
-	@echo "... src/math_parser.s"
+	@echo "... parserTest"
+	@echo "... test.o"
+	@echo "... test.i"
+	@echo "... test.s"
 .PHONY : help
 
 
