@@ -46,7 +46,6 @@ enum {
 void math_init(math_value *v);
 void math_free(math_value *v);
 int math_parse(const char *math, math_value *v);
-void math_display(const math_value *v);
 double math_get_number(const math_value *v);
 int math_calculate(math_value *v);
 

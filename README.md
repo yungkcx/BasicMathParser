@@ -18,9 +18,6 @@ int math_parse(const char *math， math_value *v);
 void math_calculate(math_value *v);  
 计算语法树的值并存储在 v->math_res 中
 
-math_display(const math_value *v);  
-显示语法树，可能跟输入的不太一样，因为解析过程会进行处理
-
 double math_get_number(math_value *v);  
 得到存储在该节点的值，若节点为操作符，则在计算前为 0，计算后为 v->math_res
 

@@ -57,6 +57,7 @@ static void test_number()
     TEST_PARSE_NUMBER(1e20, "1e20");
     TEST_PARSE_NUMBER(325.3523E50, "325.3523E50");
     TEST_PARSE_NUMBER(43.45e-48*545.54/80.46e09, "43.45e-48*545.54/80.46e09");
+    TEST_PARSE_NUMBER(1.0-(2.0-3.0), "1-(2-3)");
 }
 
 #define TEST_CALCULAT_ERROR(error, math)\

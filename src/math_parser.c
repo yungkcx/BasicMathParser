@@ -193,19 +193,6 @@ int math_parse(const char *math, math_value *v)
     return MATH_PARSE_OK;
 }
 
-void math_display(const math_value *v)
-{
-    if (v->type == MATH_NUMBER)
-        printf("%lf", math_get_number(v));
-    else if (v->type == MATH_OPERATOR) {
-        if (v->math_l)
-            math_display(v->math_l);
-        printf("%c", v->math_op);
-        if (v->math_r)
-            math_display(v->math_r);
-    }
-}
-
 double math_get_number(const math_value *v)
 {
     if (v->type == MATH_NUMBER)

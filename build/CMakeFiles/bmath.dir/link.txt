@@ -1,0 +1,2 @@
+/usr/bin/ar qc lib/libbmath.a  CMakeFiles/bmath.dir/src/math_parser.c.o
+/usr/bin/ranlib lib/libbmath.a

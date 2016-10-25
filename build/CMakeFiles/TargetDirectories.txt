@@ -1,0 +1,3 @@
+/home/yungkc/git/basicMathParser/build/CMakeFiles/edit_cache.dir
+/home/yungkc/git/basicMathParser/build/CMakeFiles/rebuild_cache.dir
+/home/yungkc/git/basicMathParser/build/CMakeFiles/bmath.dir
