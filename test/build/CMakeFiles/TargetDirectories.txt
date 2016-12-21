@@ -1,3 +1,0 @@
-/home/yungkc/git/basicMathParser/test/build/CMakeFiles/edit_cache.dir
-/home/yungkc/git/basicMathParser/test/build/CMakeFiles/rebuild_cache.dir
-/home/yungkc/git/basicMathParser/test/build/CMakeFiles/parserTest.dir

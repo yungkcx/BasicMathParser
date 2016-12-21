@@ -7,7 +7,7 @@
 解析
 ===
 
-主要有六个接口：
+共有六个接口：
 
 void math_init(math_value *v);  
 初始化根节点
@@ -29,20 +29,3 @@ const char *math 为要解析的字符串，可以为
 ws expression
 ```
 ws 是任意多的空白（'\n', '\r', '\t', ' ' 四种），后面的 expression 是真正的表达式部分，不可以包含任何空白，否则解析会出错。
-
-编译
-===
-
-```
-$ cd BasicMathParser/build
-$ make
-```
-
-测试
-===
-
-```
-$ cd BasicMathParser/test/build
-$ make
-$ ./parserTest
-```

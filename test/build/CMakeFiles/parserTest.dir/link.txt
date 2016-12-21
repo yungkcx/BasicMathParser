@@ -1,1 +1,0 @@
-/usr/bin/cc     CMakeFiles/parserTest.dir/test.c.o  -o parserTest  -L/home/yungkc/git/basicMathParser/test/../build/lib -lbmath -Wl,-rpath,/home/yungkc/git/basicMathParser/test/../build/lib 

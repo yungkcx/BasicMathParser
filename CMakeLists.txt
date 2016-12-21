@@ -1,9 +1,0 @@
-# minimum required
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1)
-
-# project name
-PROJECT(BasicMathParser)
-
-SET(LIBRARY_OUTPUT_PATH lib)
-AUX_SOURCE_DIRECTORY(src SRC_LIST)
-ADD_LIBRARY(bmath STATIC ${SRC_LIST})
